@@ -1,0 +1,15 @@
+.main-layout {
+  .footer,
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .header,
+  .footer {
+    color: white;
+  }
+  .footer {
+    background-color: #001529;
+  }
+}
