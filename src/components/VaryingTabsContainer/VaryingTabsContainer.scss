@@ -1,7 +1,9 @@
 .varying-tabs-container {
   width: 100%;
   height: 100%;
-  .tab-container {
+  .tab-container,
+  .ant-tabs-tabpane,
+  .ant-tabs-content {
     width: 100%;
     height: 100%;
   }
