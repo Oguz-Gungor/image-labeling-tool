@@ -1,35 +1,23 @@
-import { useTagContext, withTagContext } from "../../konva/context/TagContext";
-import { getColor } from "../../konva/utils/helper";
+import { withActionContext } from "../../konva/context/ActionContext";
+import { withTagContext } from "../../konva/context/TagContext";
 import CanvasContainer from "../CanvasContainer/CanvasContainer";
+import TagContainer from "../TagContainer/TagContainer";
+import ToolContainer from "../ToolContainer/ToolContainer";
 import "./LabelDraft.scss";
 function LabelDraft() {
-  const { addTag, tags, draft, initDraft, removeDraft } = useTagContext();
-
   return (
     <div className="label-draft-container">
-      <div className="tag-container"> tags</div>
-      <div className="image-container">
+      <div className="tag-container-item">
+        <TagContainer />
+      </div>
+      <div className="image-container-item">
         <CanvasContainer />
       </div>
-      <div className="tool-container">
-        <span>tools</span>
-        <button
-          onClick={() =>
-            draft
-              ? removeDraft()
-              : initDraft({
-                  id: Math.random().toString(),
-                  color: getColor(
-                    Object.values(tags).map(({ color }) => color)
-                  ),
-                })
-          }
-        >
-          pen
-        </button>
+      <div className="tool-container-item">
+        <ToolContainer />
       </div>
     </div>
   );
 }
 
-export default withTagContext(LabelDraft);
+export default withActionContext(withTagContext(LabelDraft));
