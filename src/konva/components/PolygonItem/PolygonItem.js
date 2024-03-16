@@ -1,7 +1,14 @@
 import { useMemo, useState } from "react";
 import { Group, Line, Text } from "react-konva";
 
-export default function PolygonItem({ closed, points, stroke, fill, name }) {
+export default function PolygonItem({
+  closed,
+  points,
+  stroke,
+  fill,
+  name,
+  highlight,
+}) {
   const tagPosition = useMemo(() => {
     if (!name) return;
     const { x, y } = points.reduce(
@@ -31,14 +38,14 @@ export default function PolygonItem({ closed, points, stroke, fill, name }) {
       <Line
         lineJoin="round"
         points={points}
-        stroke={hover ? "black" : stroke}
+        stroke={highlight || hover ? "black" : stroke}
         closed={closed}
         fill={fill}
       />
       {name && (
         <Text
           text={name}
-          fontSize={hover ? 24 : 14}
+          fontSize={highlight || hover ? 24 : 14}
           x={tagPosition.x}
           y={tagPosition.y}
         />

@@ -6,41 +6,38 @@ export const useTagContext = () => {
   return useContext(TagContext);
 };
 
-export const useTag = (tag) => {
-  const { tags } = useContext(TagContext);
-  return tags[tag];
-};
-
 export const withTagContext = (Component) => {
   return (props) => {
     const [tags, setTags] = useState({});
-    const [draft, setDraft] = useState(null);
     const addTag = (tag, attr) => {
       setTags((prev) => ({
         ...prev,
         [tag]: {
-          ...attr,
           ...prev[tag],
-          entities: [...(prev[tag]?.entities ?? []), { points: attr.points }],
+          ...attr,
+          entities: [
+            ...(prev[tag]?.entities ?? []),
+            ...(attr.points ? [{ points: attr?.points }] : []),
+          ],
         },
       }));
     };
     const removeTag = (tag) => {
       setTags((prev) => {
         delete prev[tag];
-        return prev;
+        return { ...prev };
       });
     };
-    const initDraft = (attr) => {
-      setDraft(attr);
+    const removeEntity = (key, index) => {
+      console.log(index);
+      setTags((prev) => {
+        prev[key].entities.splice(index, 1);
+        return { ...prev };
+      });
     };
-    const removeDraft = () => {
-      setDraft(null);
-    };
+
     return (
-      <TagContext.Provider
-        value={{ addTag, removeTag, tags, draft, initDraft, removeDraft }}
-      >
+      <TagContext.Provider value={{ addTag, removeTag, tags, removeEntity }}>
         <Component {...props} />
       </TagContext.Provider>
     );
