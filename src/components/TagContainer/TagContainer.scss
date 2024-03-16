@@ -1,0 +1,30 @@
+.tag-container {
+  display: flex;
+  flex-direction: column;
+  .tag-container-header {
+    width: 100%;
+    text-align: center;
+  }
+  .ant-tree-node-content-wrapper,
+  .ant-tree-treenode {
+    width: 100% !important;
+  }
+  .label-node,
+  .label-entity {
+    display: flex;
+    flex-direction: row;
+    .node-action-buttons {
+      display: flex;
+      flex-direction: row;
+      margin-left: auto;
+    }
+  }
+  .add-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    .add-button {
+      width: 30%;
+    }
+  }
+}
