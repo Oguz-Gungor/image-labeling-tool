@@ -1,5 +1,5 @@
-import LabelDraft from "../components/LabelDraft/LabelDraft";
-import VaryingTabsContainer from "../components/VaryingTabsContainer/VaryingTabsContainer";
+import LabelDraft from "../../components/LabelDraft/LabelDraft";
+import VaryingTabsContainer from "../../components/VaryingTabsContainer/VaryingTabsContainer";
 import "./Home.scss";
 
 export default function Home() {
