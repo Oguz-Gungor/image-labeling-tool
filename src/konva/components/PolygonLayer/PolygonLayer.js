@@ -9,6 +9,7 @@ export default function PolygonLayer({
   name,
   invisible,
   highlight,
+  dash,
 }) {
   return (
     entities.length > 0 && (
@@ -20,6 +21,7 @@ export default function PolygonLayer({
               points,
               stroke,
               fill,
+              dash,
               name,
               highlight:
                 highlight?.index != null

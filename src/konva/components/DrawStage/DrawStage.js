@@ -49,8 +49,9 @@ export default function DrawStage({ children, color }) {
         <PolygonLayer
           entities={[{ points }]}
           stroke={isDrawing.current && "black"}
-          closed={!isDrawing.current}
-          fill={"#88888866"}
+          closed={true}
+          fill={draft?.color ?? "#ff000066"}
+          dash={isDrawing.current && [5, 10]}
         />
       </Stage>
       {/*<button

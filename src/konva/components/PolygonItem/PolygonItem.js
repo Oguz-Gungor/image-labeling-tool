@@ -8,6 +8,7 @@ export default function PolygonItem({
   fill,
   name,
   highlight,
+  dash,
 }) {
   const tagPosition = useMemo(() => {
     if (!name) return;
@@ -41,8 +42,9 @@ export default function PolygonItem({
         stroke={highlight || hover ? "black" : stroke}
         closed={closed}
         fill={fill}
+        dash={dash}
       />
-      {name && (
+      {name && (hover || highlight) && (
         <Text
           text={name}
           fontSize={highlight || hover ? 24 : 14}

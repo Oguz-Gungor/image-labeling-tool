@@ -5,7 +5,7 @@ function componentToHex(c) {
 
 function rgbToHex(r, g, b) {
   console.log(r, g, b);
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b) + "66";
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b) + "CC";
 }
 function rgbIntervalValue() {
   return Math.round(Math.random() * 256);
