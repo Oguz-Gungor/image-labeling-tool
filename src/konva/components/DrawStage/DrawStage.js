@@ -2,20 +2,21 @@ import { useRef, useState } from "react";
 import { Stage } from "react-konva";
 import PolygonLayer from "../PolygonLayer/PolygonLayer";
 import { useTagContext } from "../../context/TagContext";
-import { generateRandomColor } from "../../utils/helper";
+import { useActionContext } from "../../context/ActionContext";
 
 export default function DrawStage({ children, color }) {
   const ref = useRef();
-  const { addTag, tags, draft, initDraft, removeDraft } = useTagContext();
+  const { addTag } = useTagContext();
+  const { draft, tool } = useActionContext();
+
   const [points, setPoints] = useState([]);
-  const currentTag = useRef(false);
   const isDrawing = useRef(false);
   const handleMouseDown = () => {
-    if (draft) isDrawing.current = true;
+    if (tool) isDrawing.current = true;
   };
 
   const handleMouseUp = () => {
-    if (!draft) return;
+    if (!tool) return;
     isDrawing.current = false;
     addTag(draft.id, {
       points,
@@ -25,7 +26,7 @@ export default function DrawStage({ children, color }) {
   };
 
   const handleMouseMove = (e) => {
-    if (!draft || !isDrawing.current) return;
+    if (!tool || !isDrawing.current) return;
     const point = e.target.getStage().getPointerPosition();
     setPoints((prevState) => [...prevState, point.x, point.y]);
   };
