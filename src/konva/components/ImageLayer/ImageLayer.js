@@ -1,12 +1,12 @@
 import { Image, Layer } from "react-konva";
-import logo from "../../traffic.jpg";
+import { useTagContext } from "../../context/TagContext";
 
-const image = new window.Image();
-image.src = logo;
 export default function ImageLayer() {
+  const { image } = useTagContext();
+
   return (
     <Layer>
       <Image width={450} height={400} image={image} />
-    </Layer> 
+    </Layer>
   );
 }
