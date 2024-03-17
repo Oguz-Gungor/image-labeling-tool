@@ -1,11 +1,26 @@
 import ImageTab from "../../components/ImageTab/ImageTab";
 import VaryingTabsContainer from "../../components/VaryingTabsContainer/VaryingTabsContainer";
+import {
+  useExportContext,
+  withExportContext,
+} from "../../context/ExportContext";
+import ExportWrapper from "../../wrappers/ExportWrapper";
 import "./Home.scss";
 
-export default function Home() {
+function Home() {
+  const { upsertWorkSpace, exportProject } = useExportContext();
+
   return (
     <div className="home-page-container">
-      <VaryingTabsContainer Component={ImageTab} tabPrefix={"Workspace"} />
+      <ExportWrapper onExport={() => exportProject()}>
+        <VaryingTabsContainer
+          onAdd={upsertWorkSpace}
+          Component={ImageTab}
+          tabPrefix={"Workspace"}
+        />
+      </ExportWrapper>
     </div>
   );
 }
+
+export default withExportContext(Home);
