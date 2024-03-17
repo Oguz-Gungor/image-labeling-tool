@@ -1,10 +1,11 @@
 import { Tabs } from "antd";
-import { useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./VaryingTabsContainer.scss";
 
-export default function VaryingTabsContainer({ Component, tabPrefix }) {
+export default function VaryingTabsContainer({ Component, tabPrefix, onAdd }) {
   const [activeKey, setActiveKey] = useState(1);
   const changeTabName = (itemKey) => (itemName) => {
+    onAdd({ key: itemKey, label: itemName });
     setItems((prevState) =>
       prevState.map(({ key, label, ...attr }) => ({
         key,
@@ -13,13 +14,20 @@ export default function VaryingTabsContainer({ Component, tabPrefix }) {
       }))
     );
   };
+  const firstItemLabel = `${tabPrefix ?? "Tab"} 1`;
   const [items, setItems] = useState([
     {
       key: 1,
-      label: `${tabPrefix ?? "Tab"} 1`,
-      children: <Component changeTabName={changeTabName(1)} />,
+      label: firstItemLabel,
+      children: <Component changeTabName={changeTabName(1)} id={1} />,
     },
   ]);
+  useLayoutEffect(() => {
+    onAdd({
+      key: 1,
+      label: firstItemLabel,
+    });
+  }, []);
 
   const newTabIndex = useRef(items.length);
 
@@ -28,14 +36,21 @@ export default function VaryingTabsContainer({ Component, tabPrefix }) {
   };
   const add = () => {
     const newTabKey = ++newTabIndex.current;
+    const newItemLabel = `${tabPrefix ?? "Tab"} ${newTabIndex.current}`;
+    const newTab = {
+      label: newItemLabel,
+      key: newTabKey,
+    };
     setItems([
       ...items,
       {
-        label: `${tabPrefix ?? "Tab"} ${newTabIndex.current}`,
-        children: <Component changeTabName={changeTabName(newTabKey)} />,
-        key: newTabKey,
+        ...newTab,
+        children: (
+          <Component changeTabName={changeTabName(newTabKey)} id={newTabKey} />
+        ),
       },
     ]);
+    onAdd(newTab);
     setActiveKey(newTabKey);
   };
 
