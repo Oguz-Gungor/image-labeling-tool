@@ -29,7 +29,6 @@ export const withTagContext = (Component) => {
       });
     };
     const removeEntity = (key, index) => {
-      console.log(index);
       setTags((prev) => {
         prev[key].entities.splice(index, 1);
         return { ...prev };

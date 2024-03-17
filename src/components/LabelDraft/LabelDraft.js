@@ -24,9 +24,6 @@ function LabelDraft({ workspace, mask }) {
     <ExportWrapper onExport={() => exportMask(workspace, mask)}>
       <div
         className="label-draft-container"
-        onMouseEnter={() => {
-          console.log(workspace, mask);
-        }}
       >
         <div className="tag-container-item">
           <TagContainer />

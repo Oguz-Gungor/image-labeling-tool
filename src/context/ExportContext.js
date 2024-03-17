@@ -62,7 +62,7 @@ export const withExportContext = (Component) => {
           {}
         ),
       };
-      console.log(jsonOutput);
+      return jsonOutput;
     };
 
     const exportMask = (workspaceId, maskId) => {
@@ -73,7 +73,7 @@ export const withExportContext = (Component) => {
         label: mask.label,
         tags: mask.load(),
       };
-      console.log(jsonOutput);
+      return jsonOutput;
     };
 
     const exportProject = () => {
@@ -98,7 +98,7 @@ export const withExportContext = (Component) => {
         }),
         {}
       );
-      console.log(jsonOutput);
+      return jsonOutput;
     };
     return (
       <ExportContext.Provider
