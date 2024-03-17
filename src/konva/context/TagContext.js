@@ -9,7 +9,7 @@ export const useTagContext = () => {
 export const withTagContext = (Component) => {
   return (props) => {
     const [tags, setTags] = useState({});
-    const addTag = (tag, attr) => {
+    const addTag = (tag, { points, ...attr }) => {
       setTags((prev) => ({
         ...prev,
         [tag]: {
@@ -17,7 +17,7 @@ export const withTagContext = (Component) => {
           ...attr,
           entities: [
             ...(prev[tag]?.entities ?? []),
-            ...(attr.points ? [{ points: attr?.points }] : []),
+            ...(points ? [{ points: points }] : []),
           ],
         },
       }));
