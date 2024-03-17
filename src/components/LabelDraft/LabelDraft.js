@@ -1,34 +1,51 @@
-import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   useActionContext,
   withActionContext,
 } from "../../konva/context/ActionContext";
-import { withTagContext } from "../../konva/context/TagContext";
+import { useTagContext, withTagContext } from "../../konva/context/TagContext";
 import CanvasContainer from "../CanvasContainer/CanvasContainer";
 import TagContainer from "../TagContainer/TagContainer";
 import ToolContainer from "../ToolContainer/ToolContainer";
 import "./LabelDraft.scss";
 import withTabContainer from "../../hocs/withTabContainer";
+import { useExportContext } from "../../context/ExportContext";
+import { useEffect } from "react";
+import ExportWrapper from "../../wrappers/ExportWrapper";
 
-function LabelDraft() {
+function LabelDraft({ workspace, mask }) {
   const { draft } = useActionContext();
+  const { upsertMask, exportMask } = useExportContext();
+  const { tags } = useTagContext();
+  useEffect(() => {
+    upsertMask(workspace, { key: mask, load: () => tags });
+  }, [tags]);
 
   return (
-    <div className="label-draft-container">
-      <div className="tag-container-item">
-        <TagContainer />
-      </div>
+    <ExportWrapper onExport={() => exportMask(workspace, mask)}>
       <div
-        className="image-container-item"
-        style={{ borderColor: draft?.color }}
+        className="label-draft-container"
+        onMouseEnter={() => {
+          console.log(workspace, mask);
+        }}
       >
-        <CanvasContainer />
+        <div className="tag-container-item">
+          <TagContainer />
+        </div>
+        <div
+          className="image-container-item"
+          style={{ borderColor: draft?.color }}
+        >
+          <CanvasContainer />
+        </div>
+        <div className="tool-container-item">
+          <ToolContainer />
+        </div>
       </div>
-      <div className="tool-container-item">
-        <ToolContainer />
-      </div>
-    </div>
+    </ExportWrapper>
   );
 }
 
-export default withTabContainer(withActionContext(withTagContext(LabelDraft)),"Change Mask Name");
+export default withTabContainer(
+  withActionContext(withTagContext(LabelDraft)),
+  "Change Mask Name"
+);
