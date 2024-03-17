@@ -3,6 +3,7 @@
   height: 100%;
   display: flex;
   flex-direction: row;
+  gap: 16px;
   .tag-container-item,
   .image-container-item,
   .tool-container-item´,
@@ -13,7 +14,8 @@
     min-width: 30%;
   }
   .tool-container-item {
-    min-width: 30%;
+    position: absolute;
+    right: 0px;
     display: flex;
     flex-direction: column;
   }
@@ -23,5 +25,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .image-container-item {
+    padding: 24px;
+    background-color: #001529;
+    border: solid white 4px;
   }
 }

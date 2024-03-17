@@ -1,5 +1,5 @@
 import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
-import { withActionContext } from "../../konva/context/ActionContext";
+import { useActionContext, withActionContext } from "../../konva/context/ActionContext";
 import { useTagContext, withTagContext } from "../../konva/context/TagContext";
 import CanvasContainer from "../CanvasContainer/CanvasContainer";
 import TagContainer from "../TagContainer/TagContainer";
@@ -9,6 +9,7 @@ import Dragger from "antd/es/upload/Dragger";
 
 function LabelDraft() {
   const { image, setImage } = useTagContext();
+  const { draft } = useActionContext();
 
   return (
     <div className="label-draft-container">
@@ -17,7 +18,10 @@ function LabelDraft() {
           <div className="tag-container-item">
             <TagContainer />
           </div>
-          <div className="image-container-item">
+          <div
+            className="image-container-item"
+            style={{ borderColor: draft?.color }}
+          >
             <CanvasContainer />
           </div>
           <div className="tool-container-item">
