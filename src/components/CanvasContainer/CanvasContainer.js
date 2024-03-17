@@ -1,5 +1,5 @@
 import DrawContainer from "../../konva/components/DrawContainer/DrawContainer";
 
-export default function CanvasContainer() {
-  return <DrawContainer />;
+export default function CanvasContainer({ setLoadFunction }) {
+  return <DrawContainer setLoadFunction={setLoadFunction} />;
 }

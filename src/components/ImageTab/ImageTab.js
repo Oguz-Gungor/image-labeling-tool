@@ -10,16 +10,22 @@ import "./ImageTab.scss";
 import withTabContainer from "../../hocs/withTabContainer";
 import { useExportContext } from "../../context/ExportContext";
 import ExportWrapper from "../../wrappers/ExportWrapper";
+import { useEffect } from "react";
 
 function ImageTab({ id }) {
   const { image, setImage } = useImageContext();
-  const { upsertMask, exportWorkspace } = useExportContext();
+  const { upsertMask, exportWorkspace, upsertWorkSpace } = useExportContext();
+  useEffect(() => {
+    upsertWorkSpace({ key: id, image });
+  }, [image]);
   return (
     <div className="image-tab">
       {image ? (
         <ExportWrapper onExport={() => exportWorkspace(id)}>
           <VaryingTabsContainer
-            onAdd={(maskAttr) => upsertMask(id, { ...maskAttr, image })}
+            onAdd={(maskAttr) =>
+              upsertMask(id, { ...maskAttr, image })
+            }
             Component={(props) => (
               <LabelDraft workspace={id} mask={props.id} {...props} />
             )}

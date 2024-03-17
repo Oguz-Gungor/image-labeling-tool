@@ -1,11 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Stage } from "react-konva";
 import PolygonLayer from "../PolygonLayer/PolygonLayer";
 import { useTagContext } from "../../context/TagContext";
 import { useActionContext } from "../../context/ActionContext";
 import { useDimensionContext } from "../../context/DimensionContext";
 
-export default function DrawStage({ children }) {
+export default function DrawStage({ children, setLoadFunction }) {
   const ref = useRef();
   const { dimensions } = useDimensionContext();
   const { addTag } = useTagContext();
@@ -16,6 +16,18 @@ export default function DrawStage({ children }) {
   const handleMouseDown = () => {
     if (tool) isDrawing.current = true;
   };
+
+  const loadImageUrl = () => {
+    if (ref.current) return ref.current.toDataURL();
+    return null;
+    /*const a = document.createElement("a");
+    a.download = "test.png";
+    a.href = ref.current.toDataURL();
+    a.click();*/
+  };
+  useEffect(() => {
+    setLoadFunction(loadImageUrl);
+  }, [ref.current]);
 
   const handleMouseUp = () => {
     if (!tool) return;
@@ -37,10 +49,6 @@ export default function DrawStage({ children }) {
     ]);
   };
 
-  const exportFunc = () => {
-    console.log(ref.current.toDataURL());
-    window.open(ref.current.toDataURL());
-  };
   return (
     <>
       <Stage

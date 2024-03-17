@@ -9,7 +9,7 @@ import ImageLayer from "../ImageLayer/ImageLayer";
 import TagLayers from "../TagLayer.js/TagLayer";
 import "./DrawContainer.scss";
 
-function DrawContainer() {
+function DrawContainer({ setLoadFunction }) {
   const { setDimensions } = useDimensionContext();
   const { image } = useImageContext();
   const containerRef = useRef();
@@ -42,8 +42,8 @@ function DrawContainer() {
   }, [image]);
   return (
     <div ref={containerRef} className="draw-container">
-      <DrawStage>
-        <ImageLayer/>
+      <DrawStage setLoadFunction={setLoadFunction}>
+        <ImageLayer />
         <TagLayers />
       </DrawStage>
     </div>

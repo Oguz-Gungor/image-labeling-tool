@@ -17,14 +17,12 @@ function LabelDraft({ workspace, mask }) {
   const { upsertMask, exportMask } = useExportContext();
   const { tags } = useTagContext();
   useEffect(() => {
-    upsertMask(workspace, { key: mask, load: () => tags });
+    upsertMask(workspace, { key: mask, loadTags: () => tags });
   }, [tags]);
 
   return (
     <ExportWrapper onExport={() => exportMask(workspace, mask)}>
-      <div
-        className="label-draft-container"
-      >
+      <div className="label-draft-container">
         <div className="tag-container-item">
           <TagContainer />
         </div>
@@ -32,7 +30,11 @@ function LabelDraft({ workspace, mask }) {
           className="image-container-item"
           style={{ borderColor: draft?.color }}
         >
-          <CanvasContainer />
+          <CanvasContainer
+            setLoadFunction={(loadImage) =>
+              upsertMask(workspace, { key: mask, loadImage })
+            }
+          />
         </div>
         <div className="tool-container-item">
           <ToolContainer />

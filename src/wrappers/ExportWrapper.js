@@ -13,7 +13,7 @@ export default function ExportWrapper({ children, onExport }) {
       <Button
         className="export-button"
         onClick={() => {
-          onExport();
+          console.log(onExport());
         }}
       >
         Export

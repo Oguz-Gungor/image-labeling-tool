@@ -56,7 +56,8 @@ export const withExportContext = (Component) => {
             [mask.label]: {
               image,
               label: mask.label,
-              tags: mask.load(),
+              labeledImage: mask?.loadImage(),
+              tags: mask.loadTags(),
             },
           }),
           {}
@@ -71,7 +72,8 @@ export const withExportContext = (Component) => {
       const jsonOutput = {
         image,
         label: mask.label,
-        tags: mask.load(),
+        labeledImage: mask?.loadImage(),
+        tags: mask.loadTags(),
       };
       return jsonOutput;
     };
@@ -88,8 +90,9 @@ export const withExportContext = (Component) => {
                 ...prev,
                 [mask.label]: {
                   image: workspace.image,
+                  labeledImage: mask?.loadImage(),
                   label: mask.label,
-                  tags: mask.load(),
+                  tags: mask.loadTags(),
                 },
               }),
               {}
