@@ -1,0 +1,41 @@
+.image-tab {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #001529;
+  padding: 16px;
+  .ant-tabs-tab:not(.ant-tabs-tab-active),
+  .ant-tabs-nav-add {
+    color: white;
+    svg {
+      fill: white !important;
+    }
+  }
+  .ant-tabs-content-holder,
+  .ant-tabs-tab-active {
+    background-color: white !important;
+  }
+  .image-upload-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+    background-color: white;
+    &:hover {
+      background-color: #001529;
+      .ant-upload-text,
+      .ant-upload-hint,
+      .ant-upload-drag-icon {
+        color: white !important;
+      }
+    }
+    .ant-upload-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

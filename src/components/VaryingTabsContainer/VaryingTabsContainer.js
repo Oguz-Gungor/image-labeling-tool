@@ -2,7 +2,7 @@ import { Tabs } from "antd";
 import { useRef, useState } from "react";
 import "./VaryingTabsContainer.scss";
 
-export default function VaryingTabsContainer({ Component }) {
+export default function VaryingTabsContainer({ Component, tabPrefix }) {
   const [activeKey, setActiveKey] = useState(1);
   const changeTabName = (itemKey) => (itemName) => {
     setItems((prevState) =>
@@ -16,7 +16,7 @@ export default function VaryingTabsContainer({ Component }) {
   const [items, setItems] = useState([
     {
       key: 1,
-      label: "Tab 1",
+      label: `${tabPrefix ?? "Tab"} 1`,
       children: <Component changeTabName={changeTabName(1)} />,
     },
   ]);
@@ -31,7 +31,7 @@ export default function VaryingTabsContainer({ Component }) {
     setItems([
       ...items,
       {
-        label: "Tab " + newTabIndex.current,
+        label: `${tabPrefix ?? "Tab"} ${newTabIndex.current}`,
         children: <Component changeTabName={changeTabName(newTabKey)} />,
         key: newTabKey,
       },
