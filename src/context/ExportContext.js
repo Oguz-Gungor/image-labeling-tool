@@ -66,16 +66,16 @@ export const withExportContext = (Component) => {
       return jsonOutput;
     };
 
-    const exportMask = (workspaceId, maskId) => {
+    const exportMask = async (workspaceId, maskId) => {
       const mask = workspaces[workspaceId]?.masks[maskId];
       const image = workspaces[workspaceId].image;
+      const labeledImage = await mask?.loadImage();
       const jsonOutput = {
         image,
         label: mask.label,
-        labeledImage: mask?.loadImage(),
         tags: mask.loadTags(),
       };
-      return jsonOutput;
+      return { jsonOutput, image, labeledImage ,name:"mask"};
     };
 
     const exportProject = () => {

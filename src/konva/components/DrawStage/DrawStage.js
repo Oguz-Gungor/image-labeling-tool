@@ -17,8 +17,8 @@ export default function DrawStage({ children, setLoadFunction }) {
     if (tool) isDrawing.current = true;
   };
 
-  const loadImageUrl = () => {
-    if (ref.current) return ref.current.toDataURL();
+  const loadImageUrl = async () => {
+    if (ref.current) return await ref.current.toBlob();
     return null;
     /*const a = document.createElement("a");
     a.download = "test.png";
