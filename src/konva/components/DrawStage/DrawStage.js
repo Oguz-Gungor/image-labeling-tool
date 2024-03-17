@@ -3,9 +3,11 @@ import { Stage } from "react-konva";
 import PolygonLayer from "../PolygonLayer/PolygonLayer";
 import { useTagContext } from "../../context/TagContext";
 import { useActionContext } from "../../context/ActionContext";
+import { useDimensionContext } from "../../context/DimensionContext";
 
-export default function DrawStage({ children, color }) {
+export default function DrawStage({ children }) {
   const ref = useRef();
+  const { dimensions } = useDimensionContext();
   const { addTag } = useTagContext();
   const { draft, tool } = useActionContext();
 
@@ -28,7 +30,11 @@ export default function DrawStage({ children, color }) {
   const handleMouseMove = (e) => {
     if (!tool || !isDrawing.current) return;
     const point = e.target.getStage().getPointerPosition();
-    setPoints((prevState) => [...prevState, point.x, point.y]);
+    setPoints((prevState) => [
+      ...prevState,
+      point.x / dimensions.width,
+      point.y / dimensions.height,
+    ]);
   };
 
   const exportFunc = () => {
@@ -39,8 +45,8 @@ export default function DrawStage({ children, color }) {
     <>
       <Stage
         ref={ref}
-        width={450}
-        height={400}
+        width={dimensions?.width}
+        height={dimensions?.height}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
@@ -54,21 +60,6 @@ export default function DrawStage({ children, color }) {
           dash={isDrawing.current && [5, 10]}
         />
       </Stage>
-      {/*<button
-        onClick={() =>
-          draft
-            ? removeDraft()
-            : initDraft({
-                id: Math.random().toString(),
-                color:
-                  color ??
-                  getColor(Object.values(tags).map(({ color }) => color)),
-              })
-        }
-      >
-        pen
-      </button>*/}
-      {/*<button onClick={exportFunc}>export</button>*/}
     </>
   );
 }

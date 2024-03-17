@@ -1,12 +1,19 @@
 import { Image, Layer } from "react-konva";
+import { useDimensionContext } from "../../context/DimensionContext";
 import { useTagContext } from "../../context/TagContext";
 
 export default function ImageLayer() {
+  const { dimensions } = useDimensionContext();
+
   const { image } = useTagContext();
 
   return (
     <Layer>
-      <Image width={450} height={400} image={image} />
+      <Image
+        width={dimensions?.width}
+        height={dimensions?.height}
+        image={image}
+      />
     </Layer>
   );
 }

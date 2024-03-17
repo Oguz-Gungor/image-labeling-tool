@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Group, Line, Text } from "react-konva";
+import { useDimensionContext } from "../../context/DimensionContext";
 
 export default function PolygonItem({
   closed,
@@ -10,25 +11,31 @@ export default function PolygonItem({
   highlight,
   dash,
 }) {
-  const tagPosition = useMemo(() => {
-    if (!name) return;
-    const { x, y } = points.reduce(
-      (prev, val, index) => {
-        if (index % 2 === 0) {
-          prev.x += val;
-        } else {
-          prev.y += val;
-        }
-        return prev;
-      },
-      { x: 0, y: 0 }
-    );
+  const { dimensions } = useDimensionContext();
+  const { tagPosition, realPoints } = useMemo(() => {
+    const labelPosition = { x: 0, y: 0 };
+    const realPoints = points.map((point, index) => {
+      if (index % 2 === 0) {
+        const x = point * dimensions.width;
+        labelPosition.x += x;
+        return x;
+      } else {
+        const y = point * dimensions.height;
+        labelPosition.y += y;
+        return y;
+      }
+    });
     const noOfPoints = points.length / 2;
+
     return {
-      x: x / noOfPoints,
-      y: y / noOfPoints,
+      realPoints,
+      tagPosition: {
+        x: labelPosition.x / noOfPoints,
+        y: labelPosition.y / noOfPoints,
+      },
     };
-  }, [points, name]);
+  }, [points, name, dimensions]);
+
   const [hover, setHover] = useState(false);
   return (
     <Group
@@ -38,7 +45,7 @@ export default function PolygonItem({
     >
       <Line
         lineJoin="round"
-        points={points}
+        points={realPoints}
         stroke={highlight || hover ? "black" : stroke}
         closed={closed}
         fill={fill}
