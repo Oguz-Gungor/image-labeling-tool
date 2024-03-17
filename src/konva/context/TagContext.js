@@ -9,7 +9,6 @@ export const useTagContext = () => {
 export const withTagContext = (Component) => {
   return (props) => {
     const [tags, setTags] = useState({});
-    const [image, setImage] = useState();
     const addTag = (tag, attr) => {
       setTags((prev) => ({
         ...prev,
@@ -38,9 +37,7 @@ export const withTagContext = (Component) => {
     };
 
     return (
-      <TagContext.Provider
-        value={{ addTag, removeTag, tags, removeEntity, image, setImage }}
-      >
+      <TagContext.Provider value={{ addTag, removeTag, tags, removeEntity }}>
         <Component {...props} />
       </TagContext.Provider>
     );

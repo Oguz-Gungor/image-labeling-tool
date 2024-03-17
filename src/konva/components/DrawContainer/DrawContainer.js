@@ -3,7 +3,7 @@ import {
   useDimensionContext,
   withDimensionContext,
 } from "../../context/DimensionContext";
-import { useTagContext } from "../../context/TagContext";
+import { useImageContext } from "../../context/ImageContext";
 import DrawStage from "../DrawStage/DrawStage";
 import ImageLayer from "../ImageLayer/ImageLayer";
 import TagLayers from "../TagLayer.js/TagLayer";
@@ -11,7 +11,7 @@ import "./DrawContainer.scss";
 
 function DrawContainer() {
   const { setDimensions } = useDimensionContext();
-  const { image } = useTagContext();
+  const { image } = useImageContext();
   const containerRef = useRef();
 
   const onResize = () => {
