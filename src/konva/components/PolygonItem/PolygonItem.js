@@ -39,7 +39,7 @@ export default function PolygonItem({
   const [hover, setHover] = useState(false);
   return (
     <Group
-      draggable
+      //draggable
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
