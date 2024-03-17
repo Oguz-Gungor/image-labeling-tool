@@ -1,6 +1,13 @@
 .tag-container {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  .tag-tree-container {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
   .tag-container-header {
     width: 100%;
     text-align: center;
@@ -20,6 +27,7 @@
     }
   }
   .add-row {
+    margin-top: 8px;
     display: flex;
     flex-direction: row;
     width: 100%;

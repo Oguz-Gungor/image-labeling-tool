@@ -84,7 +84,9 @@ export default function TagContainer() {
   return (
     <div className="tag-container">
       <span className="tag-container-header">Tags</span>
-      <Tree treeData={treeData} />
+      <div className="tag-tree-container">
+        <Tree treeData={treeData} />
+      </div>
       <div className="add-row">
         <Input
           value={text}
@@ -94,6 +96,7 @@ export default function TagContainer() {
         />
         <Button
           className="add-button"
+          disabled={text === "" || text === undefined}
           onClick={() => {
             const newTag = {
               color: getColor(Object.values(tags).map(({ color }) => color)),
@@ -112,9 +115,3 @@ export default function TagContainer() {
     </div>
   );
 }
-/*initDraft({
-                  id: Math.random().toString(),
-                  color: getColor(
-                    Object.values(tags).map(({ color }) => color)
-                  ),
-                })*/
