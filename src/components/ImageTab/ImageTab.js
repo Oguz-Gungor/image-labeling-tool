@@ -8,14 +8,24 @@ import LabelDraft from "../LabelDraft/LabelDraft";
 import VaryingTabsContainer from "../VaryingTabsContainer/VaryingTabsContainer";
 import "./ImageTab.scss";
 import withTabContainer from "../../hocs/withTabContainer";
+import { useExportContext } from "../../context/ExportContext";
+import ExportWrapper from "../../wrappers/ExportWrapper";
 
-function ImageTab() {
+function ImageTab({ id }) {
   const { image, setImage } = useImageContext();
-
+  const { upsertMask, exportWorkspace } = useExportContext();
   return (
     <div className="image-tab">
       {image ? (
-        <VaryingTabsContainer Component={LabelDraft} tabPrefix={"Mask"} />
+        <ExportWrapper onExport={() => exportWorkspace(id)}>
+          <VaryingTabsContainer
+            onAdd={(maskAttr) => upsertMask(id, { ...maskAttr, image })}
+            Component={(props) => (
+              <LabelDraft workspace={id} mask={props.id} {...props} />
+            )}
+            tabPrefix={"Mask"}
+          />
+        </ExportWrapper>
       ) : (
         <div className="image-upload-panel">
           <Dragger
