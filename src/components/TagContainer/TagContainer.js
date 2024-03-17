@@ -9,11 +9,11 @@ import {
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
+import TextInput from "../TextInput/TextInput";
 
 export default function TagContainer() {
   const { tags, addTag, removeTag, removeEntity } = useTagContext();
   const { initDraft, highlightItem, removeHighlight } = useActionContext();
-  const [text, setText] = useState("");
   const treeData = useMemo(
     () =>
       Object.entries(tags).map(([key, attr]) => ({
@@ -88,16 +88,8 @@ export default function TagContainer() {
         <Tree treeData={treeData} />
       </div>
       <div className="add-row">
-        <Input
-          value={text}
-          onChange={(event) => {
-            setText(event.target.value);
-          }}
-        />
-        <Button
-          className="add-button"
-          disabled={text === "" || text === undefined}
-          onClick={() => {
+        <TextInput
+          onClick={(text) => {
             const newTag = {
               color: getColor(Object.values(tags).map(({ color }) => color)),
             };
@@ -106,11 +98,8 @@ export default function TagContainer() {
               ...newTag,
               id: text,
             });
-            setText("");
           }}
-        >
-          Add
-        </Button>
+        />
       </div>
     </div>
   );
