@@ -21,7 +21,7 @@ function ImageTab({ id }) {
   return (
     <div className="image-tab">
       {image ? (
-        <ExportWrapper onExport={() => exportWorkspace(id)}>
+        // <ExportWrapper onExport={() => exportWorkspace(id)}>
           <VaryingTabsContainer
             onAdd={(maskAttr) =>
               upsertMask(id, { ...maskAttr, image })
@@ -31,7 +31,7 @@ function ImageTab({ id }) {
             )}
             tabPrefix={"Mask"}
           />
-        </ExportWrapper>
+        // </ExportWrapper>
       ) : (
         <div className="image-upload-panel">
           <Dragger

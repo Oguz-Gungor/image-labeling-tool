@@ -12,13 +12,13 @@ function Home() {
 
   return (
     <div className="home-page-container">
-      <ExportWrapper onExport={() => exportProject()}>
+      {/* <ExportWrapper onExport={() => exportProject()}> */}
         <VaryingTabsContainer
           onAdd={upsertWorkSpace}
           Component={ImageTab}
           tabPrefix={"Workspace"}
         />
-      </ExportWrapper>
+      {/* </ExportWrapper> */}
     </div>
   );
 }
