@@ -49,6 +49,9 @@ export default function DrawStage({ children }) {
         height={dimensions?.height}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onTouchMove={handleMouseMove}
+        onTouchStart={handleMouseDown}
+        onTouchEnd={handleMouseUp}
         onMouseMove={handleMouseMove}
       >
         {children}
