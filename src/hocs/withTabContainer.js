@@ -11,10 +11,7 @@ export default function withTabContainer(Component, buttonText) {
           flexDirection: "column",
         }}
       >
-        <TextInput
-          onClick={props?.changeTabName}
-          buttonText={buttonText}
-        />
+        <TextInput onClick={props?.changeTabName} buttonText={buttonText} />
         <Component {...props} />
       </div>
     );
