@@ -30,7 +30,7 @@ function ImageTab({ id }) {
         />
       ) : (
         // </ExportWrapper>
-        <ImportPanel />
+        <ImportPanel workspace={id} />
       )}
     </div>
   );

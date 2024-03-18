@@ -6,7 +6,7 @@ export const useExportContext = () => {
   return useContext(ExportContext);
 };
 
-const LABELING_DATA_LAYERS = {
+export const LABELING_DATA_LAYERS = {
   PROJECT: "project",
   WORKSPACE: "workspace",
   MASK: "mask",
@@ -15,6 +15,8 @@ const LABELING_DATA_LAYERS = {
 export const withExportContext = (Component) => {
   return (props) => {
     const [workspaces, setWorkSpaces] = useState({});
+    const [load, setLoad] = useState({});
+
     const upsertWorkSpace = ({ key, ...rest }) => {
       setWorkSpaces((prev) => ({
         ...prev,
@@ -48,6 +50,23 @@ export const withExportContext = (Component) => {
         },
       }));
     };
+
+    const loadMask = (workspaceId, { key, ...rest }) => {
+      setLoad((prev) => ({
+        ...prev,
+        [workspaceId]: {
+          ...prev[workspaceId],
+          masks: {
+            ...(prev[workspaceId]?.masks ?? {}),
+            [key]: {
+              ...((prev[workspaceId]?.masks ?? {})[key] ?? {}),
+              key,
+              ...rest,
+            },
+          },
+        },
+      }));
+    };
     const removeMask = (workspaceId, maskId) => {
       setWorkSpaces((prev) => {
         delete prev[workspaceId][maskId];
@@ -62,6 +81,7 @@ export const withExportContext = (Component) => {
       const jsonOutput = {
         image,
         label: mask.label,
+        key: mask.key,
         type: LABELING_DATA_LAYERS.MASK,
         tags: mask.loadTags(),
       };
@@ -73,6 +93,7 @@ export const withExportContext = (Component) => {
       const labeledImages = {};
       const jsonOutput = {
         label: workspaces[workspaceId].label,
+        key: workspaces[workspaceId].key,
         image,
         type: LABELING_DATA_LAYERS.WORKSPACE,
         masks: (
@@ -124,6 +145,8 @@ export const withExportContext = (Component) => {
           exportMask,
           exportWorkspace,
           exportProject,
+          loadMask,
+          load,
         }}
       >
         <Component {...props} />

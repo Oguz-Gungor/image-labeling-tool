@@ -3,9 +3,14 @@ import JSZip from "jszip";
 import { useImageContext } from "../../konva/context/ImageContext";
 import { InboxOutlined } from "@ant-design/icons";
 import "./ImportPanel.scss";
+import {
+  LABELING_DATA_LAYERS,
+  useExportContext,
+} from "../../context/ExportContext";
 
-export default function ImportPanel() {
+export default function ImportPanel({ workspace }) {
   const { setImage } = useImageContext();
+  const { loadMask, exportWorkspace, upsertWorkSpace } = useExportContext();
 
   const importImage = (file) => {
     const newImage = new window.Image();
@@ -23,6 +28,12 @@ export default function ImportPanel() {
     });
   };
 
+  const importLabelFile = (labelFile) => {
+    if ((labelFile.type = LABELING_DATA_LAYERS.MASK)) {
+        loadMask(workspace, labelFile);
+    }
+  };
+
   const resolveCompressedJsonContent = (raw) => {
     return new Promise((resolve) => {
       raw.async("string").then((data) => {
@@ -35,6 +46,9 @@ export default function ImportPanel() {
     JSZip.loadAsync(file).then((content) => {
       Promise.all(
         Object.values(content.files).map((data) => {
+          if (data.name.match(/out\/([/|.|\w|\s])*/)) {
+            return null;
+          }
           if (data.name.match(/([/|.|\w|\s])*\.(jpeg|jpg|png)/)) {
             return resolveCompressedImageContent(data);
           } else if (data.name.match(/([/|.|\w|\s])*\.json/)) {
@@ -48,6 +62,7 @@ export default function ImportPanel() {
           {}
         );
         setImage({ image, imageFile });
+        importLabelFile(labelFile);
       });
     });
   };

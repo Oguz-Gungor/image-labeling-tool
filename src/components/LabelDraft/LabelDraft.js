@@ -14,11 +14,22 @@ import ExportWrapper from "../../wrappers/ExportWrapper";
 
 function LabelDraft({ workspace, mask }) {
   const { draft } = useActionContext();
-  const { upsertMask, exportMask } = useExportContext();
-  const { tags } = useTagContext();
+  const { upsertMask, exportMask, load } = useExportContext();
+  const { tags, setTags } = useTagContext();
   useEffect(() => {
     upsertMask(workspace, { key: mask, loadTags: () => tags });
   }, [tags]);
+
+  useEffect(() => {
+    if (
+      load &&
+      load[workspace] &&
+      load[workspace].masks[mask] &&
+      load[workspace].masks[mask]?.tags
+    ) {
+      setTags(load[workspace].masks[mask]?.tags);
+    }
+  }, [load]);
 
   return (
     <ExportWrapper onExport={() => exportMask(workspace, mask)}>

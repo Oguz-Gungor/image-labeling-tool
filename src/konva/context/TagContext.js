@@ -36,7 +36,9 @@ export const withTagContext = (Component) => {
     };
 
     return (
-      <TagContext.Provider value={{ addTag, removeTag, tags, removeEntity }}>
+      <TagContext.Provider
+        value={{ addTag, removeTag, tags, removeEntity, setTags }}
+      >
         <Component {...props} />
       </TagContext.Provider>
     );
