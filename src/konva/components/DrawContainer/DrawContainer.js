@@ -21,6 +21,8 @@ function DrawContainer({ setLoadFunction }) {
     setDimensions({
       width: image.width * minRatio,
       height: image.height * minRatio,
+      realWidth: image.width,
+      realHeight: image.height,
     });
   };
   useLayoutEffect(() => {

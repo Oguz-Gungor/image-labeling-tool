@@ -6,13 +6,23 @@ export const useExportContext = () => {
   return useContext(ExportContext);
 };
 
+const LABELING_DATA_LAYERS = {
+  PROJECT: "project",
+  WORKSPACE: "workspace",
+  MASK: "mask",
+};
+
 export const withExportContext = (Component) => {
   return (props) => {
     const [workspaces, setWorkSpaces] = useState({});
     const upsertWorkSpace = ({ key, ...rest }) => {
       setWorkSpaces((prev) => ({
         ...prev,
-        [key]: { ...(prev[key] ?? {}), key, ...rest },
+        [key]: {
+          ...(prev[key] ?? {}),
+          key,
+          ...rest,
+        },
       }));
     };
     const removeWorkSpace = (id) => {
@@ -45,27 +55,6 @@ export const withExportContext = (Component) => {
       });
     };
 
-    const exportWorkspace = (workspaceId) => {
-      const image = workspaces[workspaceId].image;
-      const jsonOutput = {
-        label: workspaces[workspaceId].label,
-        image,
-        masks: Object.values(workspaces[workspaceId]?.masks).reduce(
-          (prev, mask) => ({
-            ...prev,
-            [mask.label]: {
-              image,
-              label: mask.label,
-              labeledImage: mask?.loadImage(),
-              tags: mask.loadTags(),
-            },
-          }),
-          {}
-        ),
-      };
-      return jsonOutput;
-    };
-
     const exportMask = async (workspaceId, maskId) => {
       const mask = workspaces[workspaceId]?.masks[maskId];
       const image = workspaces[workspaceId].image;
@@ -73,35 +62,57 @@ export const withExportContext = (Component) => {
       const jsonOutput = {
         image,
         label: mask.label,
+        type: LABELING_DATA_LAYERS.MASK,
         tags: mask.loadTags(),
       };
-      return { jsonOutput, image, labeledImage ,name:"mask"};
+      return { jsonOutput, image, labeledImage, name: mask.label };
     };
 
-    const exportProject = () => {
-      const jsonOutput = Object.values(workspaces).reduce(
-        (prev, workspace) => ({
-          ...prev,
-          [workspace.label]: {
-            label: workspace.label,
-            image: workspace.image,
-            masks: Object.values(workspace?.masks).reduce(
-              (prev, mask) => ({
-                ...prev,
-                [mask.label]: {
-                  image: workspace.image,
-                  labeledImage: mask?.loadImage(),
-                  label: mask.label,
-                  tags: mask.loadTags(),
-                },
-              }),
-              {}
-            ),
-          },
-        }),
-        {}
-      );
-      return jsonOutput;
+    const exportWorkspace = async (workspaceId) => {
+      const image = workspaces[workspaceId].image;
+      const labeledImages = {};
+      const jsonOutput = {
+        label: workspaces[workspaceId].label,
+        image,
+        type: LABELING_DATA_LAYERS.WORKSPACE,
+        masks: (
+          await Promise.all(
+            Object.entries(workspaces[workspaceId]?.masks).map(
+              ([key, mask]) =>
+                new Promise((resolve) => {
+                  exportMask(workspaceId, key).then(
+                    ({ jsonOutput, labeledImage }) => {
+                      labeledImages[mask.label] = labeledImage;
+                      resolve({ [mask.label]: jsonOutput });
+                    }
+                  );
+                })
+            )
+          )
+        ).reduce((prev, attr) => ({ ...prev, ...attr }), {}),
+      };
+      return { jsonOutput, labeledImages, name: workspaces[workspaceId].label };
+    };
+
+    const exportProject = async () => {
+      const labeledImages = {};
+      const jsonOutput = {
+        type: LABELING_DATA_LAYERS.PROJECT,
+        workspaces: (
+          await Promise.all(
+            Object.éntries(workspaces).map(
+              ([key, workspace]) =>
+                new Promise((resolve) => {
+                  exportWorkspace(key).then((attr) => {
+                    labeledImages[workspace.label] = attr.labeledImages;
+                    resolve({ [workspace.label]: attr.jsonOutput });
+                  });
+                })
+            )
+          )
+        ).reduce((prev, attr) => ({ ...prev, ...attr }), {}),
+      };
+      return { jsonOutput, labeledImages, name: "Project" };
     };
     return (
       <ExportContext.Provider

@@ -1,5 +1,5 @@
 import { Tabs } from "antd";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import "./VaryingTabsContainer.scss";
 
 export default function VaryingTabsContainer({ Component, tabPrefix, onAdd }) {

@@ -8,9 +8,9 @@ export const useImageContext = () => {
 
 export const withImageContext = (Component) => {
   return (props) => {
-    const [image, setImage] = useState();
+    const [{ image, imageFile }, setImage] = useState({});
     return (
-      <ImageContext.Provider value={{ image, setImage }}>
+      <ImageContext.Provider value={{ image, setImage, imageFile }}>
         <Component {...props} />
       </ImageContext.Provider>
     );

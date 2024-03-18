@@ -11,7 +11,10 @@ export default function DrawStage({ children, setLoadFunction }) {
   const { addTag } = useTagContext();
   const { draft, tool } = useActionContext();
 
-  const [points, setPoints] = useState([]);
+  const [{ points, realPoints }, setPoints] = useState({
+    points: [],
+    realPoints: [],
+  });
   const isDrawing = useRef(false);
   const handleMouseDown = () => {
     if (tool) isDrawing.current = true;
@@ -34,19 +37,25 @@ export default function DrawStage({ children, setLoadFunction }) {
     isDrawing.current = false;
     addTag(draft.id, {
       points,
+      realPoints,
       color: draft.color,
     });
-    setPoints([]);
+    setPoints({ points: [], realPoints: [] });
   };
 
   const handleMouseMove = (e) => {
     if (!tool || !isDrawing.current) return;
     const point = e.target.getStage().getPointerPosition();
-    setPoints((prevState) => [
-      ...prevState,
-      point.x / dimensions.width,
-      point.y / dimensions.height,
-    ]);
+    const projectedX = point.x / dimensions.width;
+    const projectedY = point.y / dimensions.height;
+    setPoints((prevState) => ({
+      points: [...prevState.points, projectedX, projectedY],
+      realPoints: [
+        ...prevState.realPoints,
+        projectedX * dimensions.realWidth,
+        projectedY * dimensions.realHeight,
+      ],
+    }));
   };
 
   return (

@@ -15,14 +15,18 @@ export default function ExportWrapper({ children, onExport }) {
       <Button
         className="export-button"
         onClick={() => {
-          onExport().then(({ jsonOutput, image, labeledImage, name }) => {
-            const zip = new JSZip();
-            zip.file(`${name}.png`, labeledImage, { binary: true });
-            zip.file(`${name}.json`, JSON.stringify(jsonOutput));
-            zip.generateAsync({ type: "blob" }).then((content) => {
-              FileSaver.saveAs(content, `${name}.zip`);
-            });
-          });
+          onExport().then(
+            ({ jsonOutput, image, labeledImage, labeledImages, name }) => {
+              const zip = new JSZip();
+              zip.file("image.png", image, { binary: true });
+              zip.file(`${name}.json`, JSON.stringify(jsonOutput));
+              zip.folder("out");
+              zip.file(`out/${name}.png`, labeledImage, { binary: true });
+              zip.generateAsync({ type: "blob" }).then((content) => {
+                FileSaver.saveAs(content, `${name}.zip`);
+              });
+            }
+          );
         }}
       >
         Export
