@@ -17,23 +17,4 @@
   .ant-tabs-tab-active {
     background-color: white !important;
   }
-  .image-upload-panel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s;
-    background-color: white;
-    &:hover {
-      background-color: #001529;
-      .ant-upload-text,
-      .ant-upload-hint,
-      .ant-upload-drag-icon {
-        color: white !important;
-      }
-    }
-    .ant-upload-wrapper {
-      width: 100%;
-      height: 100%;
-    }
-  }
 }
